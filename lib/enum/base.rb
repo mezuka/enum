@@ -18,7 +18,7 @@ module Enum
       end
 
       def all
-        history
+        store.to_a
       end
 
       def token(t)
@@ -39,16 +39,8 @@ module Enum
         @store ||= Set.new
       end
 
-      def store=(hash)
-        @store = hash
-      end
-
-      def history
-        @history ||= Array.new
-      end
-
-      def history=(ary)
-        @history ||= ary
+      def store=(set)
+        @store = set
       end
 
       def translate(token, options = {})
@@ -67,7 +59,6 @@ module Enum
 
       def add_value(val)
         store.add(val)
-        history.push(val)
       end
 
       def start_index
@@ -76,7 +67,6 @@ module Enum
 
       def init_child_class(child)
         child.store = self.store.clone
-        child.history = self.history.clone
       end
 
     end
