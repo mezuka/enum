@@ -9,10 +9,6 @@ module Enum
         init_child_class(child)
       end
 
-      def start_index=(index)
-        @start_index = index
-      end
-
       def values(*ary)
         ary.each { |val| add_value(val.to_s) }
       end
@@ -59,10 +55,6 @@ module Enum
 
       def add_value(val)
         store.add(val)
-      end
-
-      def start_index
-        @start_index ||= 0
       end
 
       def init_child_class(child)
