@@ -1,7 +1,5 @@
 require 'test_helper'
 
-require_relative './support/translations'
-
 describe Enum::Base do
   describe Side do
     describe '#token' do
