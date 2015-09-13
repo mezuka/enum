@@ -52,19 +52,15 @@ module Enum
       end
 
       def translate(token, options = {})
-        begin
-          ::I18n.t(token, scope: "enum.#{self}", throw: true)
-        rescue UncaughtThrowError
+        ::I18n.t(token, scope: "enum.#{self}", exception_handler: proc do
           if superclass == ::Enum::Base
-            ::I18n.t(token, scope: "enum.#{self}", throw: options[:throw])
+            ::I18n.t(token, options.merge(scope: "enum.#{self}"))
           else
-            begin
-              superclass.translate(token, throw: true)
-            rescue UncaughtThrowError
-              ::I18n.t(token, scope: "enum.#{self}", throw: false)
-            end
+            superclass.translate(token, exception_handler: proc do
+              ::I18n.t(token, scope: "enum.#{self}")
+            end)
           end
-        end
+        end)
       end
 
       private
