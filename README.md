@@ -8,7 +8,7 @@ This is a very basic implementation of enums in Ruby. The cornerstone of the lib
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'enum', require: 'enum'
+gem 'safe-enum', require: 'enum'
 ```
 
 And then execute:
@@ -17,7 +17,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install enum
+    $ gem install safe-enum
 
 ## Usage
 
