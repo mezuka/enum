@@ -29,6 +29,10 @@ module Enum
         translate(take(t))
       end
 
+      def index(token)
+        store.find_index(take(token))
+      end
+
       protected
 
       def store

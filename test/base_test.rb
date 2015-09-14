@@ -47,6 +47,27 @@ describe Enum::Base do
         assert_equal 'translation missing: en.enum.Side.right', Side.name(:right)
       end
     end
+
+    describe '#find_index' do
+      describe 'returns index for given token' do
+        specify { assert_equal 0, Side.index('left') }
+        specify { assert_equal 0, Side.index(:left) }
+        specify { assert_equal 1, Side.index('right') }
+        specify { assert_equal 1, Side.index(:right) }
+        specify { assert_equal 2, Side.index('whole') }
+        specify { assert_equal 2, Side.index(:whole) }
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            Side.take(:invalid)
+          end
+        end
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            Side.take('invalid')
+          end
+        end
+      end
+    end
   end
 
   describe NewSide do
@@ -81,6 +102,29 @@ describe Enum::Base do
         specify { assert_equal 'This is a left side', NewSide.name(:left) }
         specify { assert_equal 'translation missing: en.enum.NewSide.right', NewSide.name('right') }
         specify { assert_equal 'translation missing: en.enum.NewSide.right', NewSide.name(:right) }
+      end
+    end
+
+    describe '#find_index' do
+      describe 'returns index for given token' do
+        specify { assert_equal 0, NewSide.index('left') }
+        specify { assert_equal 0, NewSide.index(:left) }
+        specify { assert_equal 1, NewSide.index('right') }
+        specify { assert_equal 1, NewSide.index(:right) }
+        specify { assert_equal 2, NewSide.index('whole') }
+        specify { assert_equal 2, NewSide.index(:whole) }
+        specify { assert_equal 3, NewSide.index('center') }
+        specify { assert_equal 3, NewSide.index(:center) }
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            NewSide.take(:invalid)
+          end
+        end
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            NewSide.take('invalid')
+          end
+        end
       end
     end
   end
