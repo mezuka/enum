@@ -18,7 +18,7 @@ describe Enum::Predicates do
 
       describe '#side is left' do
         before do
-          @table.side = Side.take(:left)
+          @table.side = Side.enum(:left)
         end
 
         specify { assert_equal true, @table.side_is?(:left) }

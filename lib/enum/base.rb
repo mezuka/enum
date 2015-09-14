@@ -17,7 +17,7 @@ module Enum
         history
       end
 
-      def take(t)
+      def enum(t)
         ts = t.to_s
         unless store.include?(ts)
           raise(TokenNotFoundError, "token '#{t}'' not found in the enum #{self}")
@@ -26,11 +26,11 @@ module Enum
       end
 
       def name(t)
-        translate(take(t))
+        translate(enum(t))
       end
 
       def index(token)
-        history.index(take(token))
+        history.index(enum(token))
       end
 
       protected

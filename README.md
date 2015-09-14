@@ -28,13 +28,13 @@ class Side < Enum::Base
 end
 ```
 
-Now `take` safely defined values by argument with its `Symbol` or `String` type. If there is no defined such value `Enum::TokenNotFoundError` exception will be raised. And this is the **safety** - you will be noticed about the problem and fix it by introducing a new value or fixing a source of the invalid value. While others implementations of enums in Ruby (that I know) just silently ignore invalid values returning `nil` this one will raise the exception **always**. Example of usage:
+Now get a value with the `enum` method safely defined values by argument with its `Symbol` or `String` type. If there is no defined such value `Enum::TokenNotFoundError` exception will be raised. And this is the **safety** - you will be noticed about the problem and fix it by introducing a new value or fixing a source of the invalid value. While others implementations of enums in Ruby (that I know) just silently ignore invalid values returning `nil` this one will raise the exception **always**. Example of usage:
 
 ```ruby
-Side.take(:left) # => "left"
-Side.take('left') # => "left"
-Side.take(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
-Side.take('invalid') # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
+Side.enum(:left) # => "left"
+Side.enum('left') # => "left"
+Side.enum(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
+Side.enum('invalid') # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
 ```
 
 If you have installed `I18n` in your application feel free to use `name` method to retreive the values' translations. For the given example the possible translation structure in `yml` format is the following:
@@ -74,7 +74,7 @@ end
 @table.side_is?(:left) # => false
 @table.side_is?(nil) # => false
 
-@table.side = Side.take(:left)
+@table.side = Side.enum(:left)
 @table.side_is?(:left) # => true
 @table.side_is?(:right) # => false
 @table.side_is?(nil) # => false
