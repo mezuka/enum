@@ -59,6 +59,33 @@ Side.name(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in
 
 > If you don't have installed `I18n` in your project `NameError` exception will be raised on the `name` method call.
 
+Consider the case when we have an object with a field with only enum values. Include `Enum::Predicates` in the class of this object and use `enumerize` method to generate predicates. This is a more convenient way matching current value of the field with an enum value. Usage the predicate methods is **safe** also. It means that you can't pass to the method invalid enum value neither can have an invalid value in the field:
+
+```ruby
+class Table
+  include Enum::Predicates
+
+  attr_accessor :side
+
+  enumerize :side, Side
+end
+
+@table = Table.new
+@table.side_is?(:left) # => false
+@table.side_is?(nil) # => false
+
+@table.side = Side.take(:left)
+@table.side_is?(:left) # => true
+@table.side_is?(:right) # => false
+@table.side_is?(nil) # => false
+@table.side_is?(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
+
+@table.side = 'invalid'
+@table.side_is?(nil) # => false
+@table.side_is?(:left) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
+```
+> If you pass to the predicate `nil` or have `nil` value in the field the result will be always `false`. If you want to check that the field is `nil` just use Ruby's standard method `nil?`.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

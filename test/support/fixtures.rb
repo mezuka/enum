@@ -5,3 +5,12 @@ end
 class NewSide < Side
   values :center
 end
+
+
+class Table
+  include Enum::Predicates
+
+  attr_accessor :side
+
+  enumerize :side, Side
+end
