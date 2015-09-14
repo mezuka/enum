@@ -59,11 +59,11 @@ Side.name(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in
 
 > If you don't have installed `I18n` in your project `NameError` exception will be raised on the `name` method call.
 
-Consider the case when we have an object with a field with only enum values. Include `Enum::Predicates` in the class of this object and use `enumerize` method to generate predicates. This is a more convenient way matching current value of the field with an enum value. Usage the predicate methods is **safe** also. It means that you can't pass to the method invalid enum value neither can have an invalid value in the field:
+Consider the case when we have an object with a field with only enum values. Extend the class of this object by `Enum::Predicates` and use `enumerize` method to generate predicates. This is a more convenient way matching current value of the field with an enum value. Usage the predicate methods is **safe** also. It means that you can't pass to the method invalid enum value neither can have an invalid value in the field:
 
 ```ruby
 class Table
-  include Enum::Predicates
+  extend Enum::Predicates
 
   attr_accessor :side
 

@@ -8,7 +8,7 @@ end
 
 
 class Table
-  include Enum::Predicates
+  extend Enum::Predicates
 
   attr_accessor :side
 
