@@ -17,7 +17,7 @@ module Enum
         store.to_a
       end
 
-      def token(t)
+      def take(t)
         ts = t.to_s
         unless store.include?(ts)
           raise(TokenNotFoundError, "token '#{t}'' not found in the enum #{self}")
@@ -26,7 +26,7 @@ module Enum
       end
 
       def name(t)
-        translate(token(t))
+        translate(take(t))
       end
 
       protected

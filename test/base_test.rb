@@ -2,24 +2,24 @@ require 'test_helper'
 
 describe Enum::Base do
   describe Side do
-    describe '#token' do
+    describe '#take' do
       it 'returns defined token as string by symbol' do
-        assert_equal 'left', Side.token(:left)
+        assert_equal 'left', Side.take(:left)
       end
 
       it 'returns defined token as string by string' do
-        assert_equal 'left', Side.token('left')
+        assert_equal 'left', Side.take('left')
       end
 
       it 'raises exception on getting not defined token on getting token as string' do
         assert_raises Enum::TokenNotFoundError do
-          Side.token('invalid')
+          Side.take('invalid')
         end
       end
 
       it 'raises exception on getting not defined token on getting token as symbol' do
         assert_raises Enum::TokenNotFoundError do
-          Side.token(:invalid)
+          Side.take(:invalid)
         end
       end
     end
@@ -56,20 +56,20 @@ describe Enum::Base do
       end
     end
 
-    describe '#token' do
+    describe '#take' do
       describe "has parent's tokens and itselves" do
-        specify { assert_equal 'left', NewSide.token(:left) }
-        specify { assert_equal 'right', NewSide.token(:right) }
-        specify { assert_equal 'whole', NewSide.token(:whole) }
-        specify { assert_equal 'center', NewSide.token(:center) }
+        specify { assert_equal 'left', NewSide.take(:left) }
+        specify { assert_equal 'right', NewSide.take(:right) }
+        specify { assert_equal 'whole', NewSide.take(:whole) }
+        specify { assert_equal 'center', NewSide.take(:center) }
         specify do
           assert_raises Enum::TokenNotFoundError do
-            NewSide.token(:invalid)
+            NewSide.take(:invalid)
           end
         end
         specify do
           assert_raises Enum::TokenNotFoundError do
-            NewSide.token('invalid')
+            NewSide.take('invalid')
           end
         end
       end
