@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'enum/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "enum"
+  spec.name          = "safe-enum"
   spec.version       = Enum::VERSION
   spec.authors       = ["Andrey Koleshko"]
   spec.email         = ["ka8725@gmail.com"]
