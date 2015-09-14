@@ -17,6 +17,10 @@ module Enum
         history
       end
 
+      def take(*tokens)
+        tokens.map { |token| enum(token) }
+      end
+
       def enum(t)
         ts = t.to_s
         unless store.include?(ts)

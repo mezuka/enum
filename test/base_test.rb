@@ -2,6 +2,21 @@ require 'test_helper'
 
 describe Enum::Base do
   describe Side do
+    describe '#take' do
+      describe 'returns given tokens safely' do
+        specify { assert_equal ['left', 'right'], Side.take(:left, :right) }
+        specify { assert_equal ['left', 'right'], Side.take('left', :right) }
+        specify { assert_equal ['left', 'right'], Side.take(:left, 'right') }
+        specify { assert_equal ['left', 'right'], Side.take('left', 'right') }
+
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            Side.take(:left, :invalid)
+          end
+        end
+      end
+    end
+
     describe '#enum' do
       it 'returns defined token as string by symbol' do
         assert_equal 'left', Side.enum(:left)
