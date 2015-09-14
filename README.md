@@ -1,3 +1,4 @@
+![Travis](https://travis-ci.org/mezuka/enum.svg)
 # Enum
 
 This is a very basic implementation of enums in Ruby. The cornerstone of the library is **safety**.
