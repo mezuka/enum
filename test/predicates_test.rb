@@ -2,11 +2,11 @@ require 'test_helper'
 
 describe Enum::Predicates do
   describe Table do
-    describe '#side_is? is generated and matches the table state with a given token' do
-      before do
-        @table = Table.new
-      end
+    before do
+      @table = Table.new
+    end
 
+    describe '#side_is? is generated and matches the table state with a given token' do
       describe '#side is nil' do
         before do
           @table.side = nil
@@ -43,6 +43,25 @@ describe Enum::Predicates do
         end
 
         specify { assert_equal false, @table.side_is?(nil) }
+      end
+    end
+
+    describe '#side_any? is generated and matches the table state with a given tokens' do
+      before do
+        @table.side = Side.enum(:left)
+      end
+
+      specify { assert_equal true, @table.side_any?(:left, :right) }
+      specify { assert_equal false, @table.side_any?(:right) }
+      specify do
+        assert_raises Enum::TokenNotFoundError do
+          @table.side_any?(:left, :invalid)
+        end
+      end
+      specify do
+        assert_raises Enum::TokenNotFoundError do
+          @table.side_any?(nil)
+        end
       end
     end
   end
