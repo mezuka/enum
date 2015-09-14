@@ -28,7 +28,7 @@ class Side < Enum::Base
 end
 ```
 
-Now `take` safely defined values by argument with its `Symbol` or `String` type. If there is no defined such value `Enum::TokenNotFoundError` exception will be raised. And this is the **safety** - you will be noticed about the problem and fix it by introducing a new value or fixing a source of the invalid value. While others implementations of enums in Ruby (that I know) just silently ignore invalid values returing `nil` this one will raise the exception **always**. Example of usage:
+Now `take` safely defined values by argument with its `Symbol` or `String` type. If there is no defined such value `Enum::TokenNotFoundError` exception will be raised. And this is the **safety** - you will be noticed about the problem and fix it by introducing a new value or fixing a source of the invalid value. While others implementations of enums in Ruby (that I know) just silently ignore invalid values returning `nil` this one will raise the exception **always**. Example of usage:
 
 ```ruby
 Side.take(:left) # => "left"
@@ -85,6 +85,16 @@ end
 @table.side_is?(:left) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
 ```
 > If you pass to the predicate `nil` or have `nil` value in the field the result will be always `false`. If you want to check that the field is `nil` just use Ruby's standard method `nil?`.
+
+It's possible to get index of an enum value with `index` method. It can be convenient in some circumstances:
+
+```ruby
+class WeekDay < Enum::Base
+  values :sunday, :monday, :tuesday, :wednesday, :thusday, :friday, :saturday
+end
+WeekDay.index(:sunday) == Date.new(2015, 9, 13).wday # => true
+WeekDay.index(:monday) # => 1
+```
 
 ## Development
 
