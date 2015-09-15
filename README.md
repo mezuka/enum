@@ -97,6 +97,8 @@ end
 @table.side = 'invalid'
 @table.side_is?(nil) # => false
 @table.side_is?(:left) # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
+@table.side_any?(:left, :right) # => true
+@table.side_any?(:right) # => false
 ```
 > If you pass to the predicate `nil` or have `nil` value in the field the result will be always `false`. If you want to check that the field is `nil` just use Ruby's standard method `nil?`.
 
