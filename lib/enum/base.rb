@@ -25,7 +25,7 @@ module Enum
         store.include?(token.to_s)
       end
 
-      def take(*tokens)
+      def enums(*tokens)
         tokens.map { |token| enum(token) }
       end
 

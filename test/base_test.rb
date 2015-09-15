@@ -8,16 +8,16 @@ describe Enum::Base do
       end
     end
 
-    describe '#take' do
+    describe '#enums' do
       describe 'returns given tokens safely' do
-        specify { assert_equal ['left', 'right'], Side.take(:left, :right) }
-        specify { assert_equal ['left', 'right'], Side.take('left', :right) }
-        specify { assert_equal ['left', 'right'], Side.take(:left, 'right') }
-        specify { assert_equal ['left', 'right'], Side.take('left', 'right') }
+        specify { assert_equal ['left', 'right'], Side.enums(:left, :right) }
+        specify { assert_equal ['left', 'right'], Side.enums('left', :right) }
+        specify { assert_equal ['left', 'right'], Side.enums(:left, 'right') }
+        specify { assert_equal ['left', 'right'], Side.enums('left', 'right') }
 
         specify do
           assert_raises Enum::TokenNotFoundError do
-            Side.take(:left, :invalid)
+            Side.enums(:left, :invalid)
           end
         end
       end
