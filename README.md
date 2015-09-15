@@ -37,6 +37,14 @@ Side.enum(:invalid) # => Enum::TokenNotFoundError: token 'invalid'' not found in
 Side.enum('invalid') # => Enum::TokenNotFoundError: token 'invalid'' not found in the enum Side
 ```
 
+Get all defined enum values with the `all` method:
+
+```ruby
+Side.all # => ['left', 'rigth', 'whole']
+```
+
+> Order or the returned values in the same as their definition. It's guaranteed.
+
 If you have installed `I18n` in your application feel free to use `name` method to retreive the values' translations. For the given example the possible translation structure in `yml` format is the following:
 
 ```yml
@@ -94,6 +102,13 @@ class WeekDay < Enum::Base
 end
 WeekDay.index(:sunday) == Date.new(2015, 9, 13).wday # => true
 WeekDay.index(:monday) # => 1
+WeekDay.indexes # => [0, 1, 2, 3, 4, 5, 6]
+```
+
+In order to get array of defined enums safely use `enums` method:
+
+```ruby
+ Side.enums(:left, :right) # => ['left', 'right']
 ```
 
 ## Development
