@@ -45,6 +45,12 @@ Side.all # => ['left', 'rigth', 'whole']
 
 > Order or the returned values in the same as their definition. It's guaranteed.
 
+In order to get array of defined enums safely use `enums` method:
+
+```ruby
+ Side.enums(:left, :right) # => ['left', 'right']
+```
+
 If you have installed `I18n` in your application feel free to use `name` method to retreive the values' translations. For the given example the possible translation structure in `yml` format is the following:
 
 ```yml
@@ -103,12 +109,6 @@ end
 WeekDay.index(:sunday) == Date.new(2015, 9, 13).wday # => true
 WeekDay.index(:monday) # => 1
 WeekDay.indexes # => [0, 1, 2, 3, 4, 5, 6]
-```
-
-In order to get array of defined enums safely use `enums` method:
-
-```ruby
- Side.enums(:left, :right) # => ['left', 'right']
 ```
 
 ## Development
