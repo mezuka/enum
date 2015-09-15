@@ -17,6 +17,14 @@ module Enum
         history
       end
 
+      def indexes
+        (0...store.size).to_a
+      end
+
+      def include?(token)
+        store.include?(token.to_s)
+      end
+
       def take(*tokens)
         tokens.map { |token| enum(token) }
       end

@@ -2,6 +2,12 @@ require 'test_helper'
 
 describe Enum::Base do
   describe Side do
+    describe '#indexes' do
+      describe 'returns defined indexes' do
+        specify { assert_equal [0, 1, 2], Side.indexes }
+      end
+    end
+
     describe '#take' do
       describe 'returns given tokens safely' do
         specify { assert_equal ['left', 'right'], Side.take(:left, :right) }
@@ -14,6 +20,14 @@ describe Enum::Base do
             Side.take(:left, :invalid)
           end
         end
+      end
+    end
+
+    describe '#include?' do
+      describe 'returns boolean result in any case' do
+        specify { assert_equal true, Side.include?(:left) }
+        specify { assert_equal true, Side.include?('left') }
+        specify { assert_equal false, Side.include?(:invalid) }
       end
     end
 
