@@ -10,7 +10,7 @@ module Enum
       end
 
       define_method("#{field}_any?") do |*others|
-        others.all? { |other| enum.enum(other) } # make sure that all others values are valid enums
+        others.each { |other| enum.enum(other) } # make sure that all others values are valid enums
         others.any? { |other| public_send("#{field}_is?", other) }
       end
     end
