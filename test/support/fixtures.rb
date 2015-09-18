@@ -14,3 +14,10 @@ class Table
 
   enumerize :side, Side
 end
+
+
+module Room
+  class Side < Enum::Base
+    values :left, :right
+  end
+end

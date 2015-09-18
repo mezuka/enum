@@ -157,4 +157,17 @@ describe Enum::Base do
       end
     end
   end
+
+  describe Room::Side do
+    describe '#name' do
+      describe 'returns correct translations for namespaced class' do
+        specify { assert_equal 'This is a left side of the room', Room::Side.name(:left) }
+        specify do
+          assert_raises Enum::TokenNotFoundError do
+            Room::Side.enum(:invalid)
+          end
+        end
+      end
+    end
+  end
 end
