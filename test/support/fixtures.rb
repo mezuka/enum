@@ -21,3 +21,8 @@ module Room
     values :left, :right
   end
 end
+
+class Suppressed < Enum::Base
+  values :left, :right, :whole
+  suppress_read_errors true
+end

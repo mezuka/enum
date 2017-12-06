@@ -8,13 +8,13 @@ module Enum
     class << self
       # subclass-value options
       #   :default => <:ERROR|:ANY|:something|nil>
-      #   :supress_read_errors => <true|false>
-      attr_accessor :default, :supress_read_errors, :klass
+      #   :suppress_read_errors => <true|false>
+      attr_accessor :default, :suppress_read_errors, :klass
     end
     
     def self.inherited(subclass)
       # With no defaults, Value subclass settings will be thus:
-      # subclass.supress_read_errors = nil
+      # subclass.suppress_read_errors = nil
       # subclass.default = nil
     end
     
@@ -30,12 +30,12 @@ module Enum
       end
     end
     
-    # Combined getter/setter for 'supress_read_errors'.
-    def self.supress_read_errors(*args)
+    # Combined getter/setter for 'suppress_read_errors'.
+    def self.suppress_read_errors(*args)
       if !args.empty?
-        @supress_read_errors = args[0]
+        @suppress_read_errors = args[0]
       else
-        @supress_read_errors
+        @suppress_read_errors
       end
     end
     
@@ -71,7 +71,7 @@ module Enum
       begin
         klass[_value]
       rescue Enum::TokenNotFoundError => _error
-        if self.class.supress_read_errors
+        if self.class.suppress_read_errors
           _value
         else
           raise _error
@@ -115,7 +115,7 @@ module Enum
       begin
         klass.index(_value)
       rescue Enum::TokenNotFoundError => _error
-        raise _error unless self.class.supress_read_errors
+        raise _error unless self.class.suppress_read_errors
       end
     end
     alias_method :to_i, :index
