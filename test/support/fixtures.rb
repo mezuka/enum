@@ -26,3 +26,9 @@ class Suppressed < Enum::Base
   values :left, :right, :whole
   suppress_read_errors true
 end
+
+class LoadAnyValue < Enum::Base
+  values :left, :right, :whole
+  default :ANY
+  suppress_read_errors true
+end

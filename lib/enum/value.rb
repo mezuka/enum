@@ -12,11 +12,11 @@ module Enum
       attr_accessor :default, :suppress_read_errors, :klass
     end
     
-    def self.inherited(subclass)
-      # With no defaults, Value subclass settings will be thus:
-      # subclass.suppress_read_errors = nil
-      # subclass.default = nil
-    end
+    # def self.inherited(subclass)
+    #   # With no defaults, Value subclass settings will be thus:
+    #   # subclass.suppress_read_errors = nil
+    #   # subclass.default = nil
+    # end
     
     # Combined getter/setter for 'default'.
     def self.default(*args)
