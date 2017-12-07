@@ -109,7 +109,7 @@ module Enum
       def init_child_class(child)
         class << child
           extend ::Forwardable
-          def_delegators :'self::Value', :default, :suppress_read_errors
+          def_delegators :'self::Value', :default_value, :suppress_read_errors
         end
         child.const_set :Value, ::Class.new(::Enum::Value)
         child::Value.klass = child

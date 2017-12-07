@@ -1,7 +1,7 @@
 require 'test_helper'
 
 describe Enum::Value do
-  describe '.default' do; end
+  describe '.default_value' do; end
   
   describe '.suppress_read_errors' do; end
   

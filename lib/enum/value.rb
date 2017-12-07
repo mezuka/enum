@@ -1,32 +1,33 @@
 module Enum
   class Value
     
+    # TODO: Perhaps stored_value should be renamed unsafe_value?
+    
     include Comparable
 
     attr_reader :stored_value, :error
     
     class << self
-      # subclass-value options
-      #   :default => <:ERROR|:ANY|:something|nil>
-      #   :suppress_read_errors => <true|false>
-      attr_accessor :default, :suppress_read_errors, :klass
+      attr_accessor :default_value, :suppress_read_errors, :klass
     end
     
-    # def self.inherited(subclass)
-    #   # With no defaults, Value subclass settings will be thus:
-    #   # subclass.suppress_read_errors = nil
-    #   # subclass.default = nil
-    # end
+    def self.inherited(subclass)
+      # Value subclass settings and options
+      #   @default_value => <:ERROR|:ANY|:something|nil>
+      #   @suppress_read_errors => <true|false>
+      subclass.suppress_read_errors = false
+      subclass.default_value = :ERROR
+    end
     
-    # Combined getter/setter for 'default'.
-    def self.default(*args)
+    # Combined getter/setter for 'default_value'.
+    def self.default_value(*args)
       # Can't use .any? because [nil].any? is false (ruby 2.4),
       # and nil is a valid argument here.
       # [nil].empty? is also false, which is what we want.
       if !args.empty?
-        @default = args[0]
+        @default_value = args[0]
       else
-        @default
+        @default_value
       end
     end
     
@@ -40,7 +41,7 @@ module Enum
     end
     
     # Load a primitive (symbol, string, integer) into new enum Value instance,
-    # taking into consideration enum constraints, default value setting.
+    # taking into consideration enum constraints, default_value setting.
     # Returns frozen Value instance.
     def initialize(new_val) #, enum_class)
       begin
@@ -48,12 +49,12 @@ module Enum
       rescue Enum::TokenNotFoundError => _error
         @error = _error.freeze
         case
-        when self.class.default == :ERROR
+        when self.class.default_value == :ERROR
           raise _error
-        when self.class.default == :ANY
+        when self.class.default_value == :ANY
           @stored_value = new_val.freeze
         else
-          @stored_value = self.class.default.freeze
+          @stored_value = self.class.default_value.freeze
         end
       end
       self.freeze
