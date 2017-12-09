@@ -17,6 +17,7 @@ module Enum
       #   @suppress_read_errors => <true|false>
       subclass.suppress_read_errors = false
       subclass.default_value = :ERROR
+      super
     end
     
     # Combined getter/setter for 'default_value'.
@@ -24,10 +25,10 @@ module Enum
       # Can't use .any? because [nil].any? is false (ruby 2.4),
       # and nil is a valid argument here.
       # [nil].empty? is also false, which is what we want.
-      if !args.empty?
-        @default_value = args[0]
-      else
+      if args.empty?
         @default_value
+      else
+        @default_value = args[0]
       end
     end
     
@@ -43,16 +44,16 @@ module Enum
     # Load a primitive (symbol, string, integer) into new enum Value instance,
     # taking into consideration enum constraints, default_value setting.
     # Returns frozen Value instance.
-    def initialize(new_val) #, enum_class)
+    def initialize(raw_val)
       begin
-        @stored_value = klass[new_val].to_sym.freeze
+        @stored_value = klass[raw_val].to_sym.freeze
       rescue Enum::TokenNotFoundError => _error
         @error = _error.freeze
         case
         when self.class.default_value == :ERROR
           raise _error
         when self.class.default_value == :ANY
-          @stored_value = new_val.freeze
+          @stored_value = raw_val.freeze
         else
           @stored_value = self.class.default_value.freeze
         end

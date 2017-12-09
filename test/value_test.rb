@@ -1,11 +1,93 @@
 require 'test_helper'
 
 describe Enum::Value do
-  describe '.default_value' do; end
+
+  describe '.inherited' do
+    describe 'sets subclass.default_value to :ERROR' do
+      specify { assert_equal :ERROR, Class.new(Enum::Value).instance_variable_get(:@default_value) }
+    end
+    describe 'sets subclass.suppress_read_errors to false' do
+      specify { assert_equal false, Class.new(Enum::Value).instance_variable_get(:@suppress_read_errors) }
+    end
+  end
   
-  describe '.suppress_read_errors' do; end
+  describe '.default_value' do
+    before { @side = Class.new(Side) }
+    describe 'sets class-level @default_value to args[0] if args[0] exist' do
+      specify { @side::Value.default_value(:something); assert_equal :something, @side::Value.instance_variable_get(:@default_value) }
+    end
+    describe 'returns class-level @default_value if args.empty?' do
+      specify { assert_equal :ERROR, @side::Value.instance_variable_get(:@default_value) }
+    end
+  end
   
-  describe '#initialize' do; end
+  describe '.suppress_read_errors' do
+    before { @side = Class.new(Side) }
+    describe 'sets class-level @suppress_read_errors to args[0] if args[0] exist' do
+      specify { @side::Value.suppress_read_errors(true); assert_equal true, @side::Value.instance_variable_get(:@suppress_read_errors) }
+    end
+    describe 'returns class-level @suppress_read_errors if args.empty?' do
+      specify { assert_equal false, @side::Value.instance_variable_get(:@suppress_read_errors) }
+    end
+  end
+  
+  describe '#initialize' do
+    describe 'always returns frozen object, unless exception raised' do
+      specify { assert Side::Value.allocate.send(:initialize, :left).frozen? }
+    end
+    
+    describe 'given valid enum token' do
+      it "sets @stored_value with frozen token" do
+        assert_equal :left, Side::Value.allocate.send(:initialize, :left).instance_variable_get(:@stored_value)
+        assert Side::Value.allocate.send(:initialize, :left).instance_variable_get(:@stored_value).frozen?
+      end
+    end
+    
+    describe 'given invalid enum token' do
+      before do
+        @side_class = Class.new(Side)
+        @val_class = @side_class::Value
+        @val_class.default_value :ERROR
+        #@invalid_val = @val_class.allocate.send(:initialize, :invalid)
+      end
+
+      it 'sets @error with TokenNotFoundError' do
+        @val_class.default_value :ANY
+        @invalid_val = @val_class.allocate.send(:initialize, :invalid)
+        assert_kind_of Enum::TokenNotFoundError, @invalid_val.instance_variable_get(:@error)
+      end
+      
+      describe 'when default_value == :ERROR' do
+        it 'raises TokenNotFoundError' do
+          assert_raises(Enum::TokenNotFoundError) do
+            @val_class.allocate.send(:initialize, :invalid)
+          end
+        end
+      end
+      
+      describe 'when default_value == :ANY' do
+        before do
+          @val_class.default_value :ANY
+          @invalid_value = @val_class.allocate.send(:initialize, :invalid)
+        end
+        it 'sets @stored_value = raw_val.freeze' do
+          assert_equal :invalid, @invalid_value.instance_variable_get(:@stored_value)
+          assert @invalid_value.instance_variable_get(:@stored_value).frozen?
+        end
+      end
+      
+      describe 'when default_value is anything else' do
+        before do
+          @val_class.default_value :none
+          @invalid_value = @val_class.allocate.send(:initialize, :invalid)
+        end
+        it 'sets @stored_value = self.class.default_value.freeze' do
+          assert_equal :none, @invalid_value.instance_variable_get(:@stored_value)
+          assert @invalid_value.instance_variable_get(:@stored_value).frozen?
+        end
+      end
+    end
+  end
 
   describe '#klass' do
     describe 'returns Base child' do
@@ -49,7 +131,7 @@ describe Enum::Value do
         end
       end
     end
-  end # #enum_value
+  end # enum_value
   
   describe '#to_s' do
     describe 'gets enum_value as string' do
