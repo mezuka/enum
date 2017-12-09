@@ -1,4 +1,5 @@
 require 'set'
+require 'forwardable'
 
 module Enum
   class Base < BasicObject
@@ -37,12 +38,35 @@ module Enum
         ts
       end
 
-      def name(t)
-        translate(enum(t))
+      # Allow Class.name to work if no args are given.
+      def name(*t)
+        if t.empty?
+          super
+        else
+          translate(enum(t[0]))
+        end
       end
 
       def index(token)
         history.index(enum(token))
+      end
+      
+      # Get a new Value instance
+      def new(new_value)
+        new_instance = self::Value.new(new_value)
+        new_instance
+      end
+      
+      # Render value given interger, string, or symbol.
+      def [](val)
+        case
+        when val.is_a?(::Integer)
+          self.all[val]
+        when val.is_a?(::Symbol) || val.is_a?(::String)
+          self.enum(val)
+        else
+          self.enum(val)
+        end
       end
 
       protected
@@ -83,6 +107,13 @@ module Enum
       end
 
       def init_child_class(child)
+        class << child
+          extend ::Forwardable
+          def_delegators :'self::Value', :default_value, :suppress_read_errors
+        end
+        child.const_set :Value, ::Class.new(::Enum::Value)
+        child::Value.klass = child
+        
         child.store = self.store.clone
         child.history = self.history.clone
       end
