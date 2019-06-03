@@ -170,4 +170,12 @@ describe Enum::Base do
       end
     end
   end
+
+  describe Room::COLORS do
+    describe '#all' do
+      it 'returns the defined values in order of their definition' do
+        assert_equal ["yellow", "orange", "blue"], Room::COLORS.all
+      end
+    end
+  end
 end
