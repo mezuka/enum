@@ -20,4 +20,6 @@ module Room
   class Side < Enum::Base
     values :left, :right
   end
+
+  COLORS = Enum[:yellow, :orange, :blue]
 end
