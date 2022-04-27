@@ -66,7 +66,7 @@ module Enum
       def translate(token, options = {})
         I18n.t(token, scope: "enum.#{self}", exception_handler: proc do
           if superclass == Enum::Base
-            I18n.t(token, options.merge(scope: "enum.#{self}"))
+            I18n.t(token, **options.merge(scope: "enum.#{self}"))
           else
             superclass.translate(token, exception_handler: proc do
               I18n.t(token, scope: "enum.#{self}")
